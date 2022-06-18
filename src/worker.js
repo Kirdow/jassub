@@ -85,14 +85,14 @@ Module.preRun.push(function () {
     }
   }
 
-  const fallbackFontData = ArrayBuffer.isView(self.fallbackFont) ? self.fallbackFont : readBinary(self.fallbackFont)
-  Module.FS.writeFile('/fonts/.fallback', fallbackFontData, { encoding: 'binary' })
+  // const fallbackFontData = ArrayBuffer.isView(self.fallbackFont) ? self.fallbackFont : readBinary(self.fallbackFont)
+  // Module.FS.writeFile('/fonts/.fallback', fallbackFontData, { encoding: 'binary' })
 
-  const fontFiles = self.fontFiles || []
-  for (let i = 0; i < fontFiles.length; i++) {
-    const fontData = ArrayBuffer.isView(fontFiles[i]) ? fontFiles[i] : readBinary(fontFiles[i])
-    Module.FS.writeFile('/fonts/font' + i, fontData, { encoding: 'binary' })
-  }
+  // const fontFiles = self.fontFiles || []
+  // for (let i = 0; i < fontFiles.length; i++) {
+  //   const fontData = ArrayBuffer.isView(fontFiles[i]) ? fontFiles[i] : readBinary(fontFiles[i])
+  //   Module.FS.writeFile('/fonts/font' + i, fontData, { encoding: 'binary' })
+  // }
 })
 
 const textByteLength = (input) => new TextEncoder().encode(input).buffer.byteLength
@@ -101,6 +101,10 @@ Module.onRuntimeInitialized = function () {
   self.jassubObj = new Module.JASSUB()
 
   self.jassubObj.initLibrary(self.width, self.height, '/fonts/.fallback')
+
+  const fallbackFontData = ArrayBuffer.isView(self.fallbackFont) ? self.fallbackFont : readBinary(self.fallbackFont)
+  self.jassubObj.addFont('/fonts/.fallback', fallbackFontData, fallbackFontData.byteLength)
+  self.jassubObj.reloadFonts()
 
   self.jassubObj.createTrackMem(self.subContent, textByteLength(self.subContent))
   self.jassubObj.setDropAnimations(self.dropAllAnimations)
