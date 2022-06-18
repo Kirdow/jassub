@@ -104,6 +104,7 @@ Module.onRuntimeInitialized = function () {
 
   const fallbackFontData = ArrayBuffer.isView(self.fallbackFont) ? self.fallbackFont : readBinary(self.fallbackFont)
   self.jassubObj.addFont('.fallback', fallbackFontData, fallbackFontData.byteLength)
+
   self.jassubObj.reloadFonts()
 
   self.jassubObj.createTrackMem(self.subContent, textByteLength(self.subContent))
